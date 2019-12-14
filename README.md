@@ -20,41 +20,74 @@ Design Note:-
 
 Note:-  
 - when application is loading entertain to mask loading time
-- selected, focus, highlighted style par Khas Dhyan rakhvu.
-- Apple TV ma keyboard na ave to bane tya sushi signin ane user information enter karvanu e avoid karvu.
-- User menu button par click kare etle back jay eve app banavi. (Do not display back button)
+- carefull on selected, focus, highlighted style.
+- Maximum Avoid input from user
+- when user press on menu button close app or viewcontroller. (Do not display back button)
 
 
 Remote what can do:-  
 - Swipe up/down/left/right (For simulator:- command + arrow move)
+- Tap up/down/left/right
 - long press on touch surface
 - menu button to back (For simulator:- esc)
-
-
 
 
 Programing use full Note:-  
 
 1)Control use for focus  
-    UIButton  
-    UIControl  
-    UISegmentedControl  
-    UITabBar  
-    UITextField  
-    UISearchBar (although UISearchBar itself isn’t focusable, its internal text field is)  
+- UIButton  
+- UIControl  
+- UISegmentedControl  
+- UITabBar  
+- UITextField  
+- UISearchBar (although UISearchBar itself isn’t focusable, its internal text field is)  
 
 2)Get current focus control from screen:-  
-UIScreen.mainScreen().focusedView // possibly nil  
+- UIScreen.mainScreen().focusedView // possibly nil  
 
 3)Prevent or manage cell can focus or not:-  
-    collectionView(_:shouldUpdateFocusInContext:)  
-    tableView(_:shouldUpdateFocusInContext:)  
+```
+collectionView(_:shouldUpdateFocusInContext:)  
+tableView(_:shouldUpdateFocusInContext:)  
+```
 
 4)Adjust Image when focused use adjustsImageWhenAncestorFocused property  
 
 5)perform animation when get or lost focus   
+```
 use "didUpdateFocusInContext" method and get next and previous focus view  
+```
 
 6)force update focus :-  
+```
 item.setNeedsFocusUpdate()  
 item.updateFocusIfNeeded()  
+```
+
+
+# Userfull method :-
+```
+//Change focus of view (for new version)
+- (NSArray<id<UIFocusEnvironment>> *)preferredFocusEnvironments {
+    return @[self.view1, self.view2, self.view3];
+}
+
+//When firsttime load set bydefault first row focus
+- (NSIndexPath *)indexPathForPreferredFocusedViewInTableView:(UITableView *)tableView {
+    return [NSIndexPath indexPathForRow:0 inSection:0];
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldUpdateFocusInContext:(UICollectionViewFocusUpdateContext *)context {
+	//for prevent focus
+}
+
+- (void)tableView:(UITableView *)tableView didUpdateFocusInContext:(UITableViewFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator {
+	//animate you view when focus got to lost
+	//for next view use context.nextFocusedView
+	//for previous view use context.previouslyFocusedView
+}
+
+- (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator {
+	//animate you view when focus got to lost
+}
+```
